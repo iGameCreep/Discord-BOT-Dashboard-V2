@@ -1,21 +1,11 @@
-FROM node:14
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-ENV clientID= \
-    clientSecret= \
-    callBackURL= \
-    admin= \
-    token= \
-    prefix= \
-    port=
-
-ADD src .
-
-COPY package*.json ./
+COPY src .
 
 RUN npm install
 
 EXPOSE 3000
 
-CMD clientID=$clientID clientSecret=$clientSecret callBackURL=$callBackURL admin=$admin token=$token prefix=$prefix port=$port node index.js
+CMD [ "node", "index.js" ]
