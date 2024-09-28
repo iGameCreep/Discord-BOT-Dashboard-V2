@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const prefix = require('../config/config.json');
 
 module.exports.details = {
@@ -11,17 +11,15 @@ module.exports.details = {
 
 module.exports.execute = async (client, message, args) => {
     const { member } = message;
-    const tag = `<@${member.id}>`;
+    const managerMessagesPermission = PermissionsBitField.Flags.ManageMessages;
 
-    if (message.guild.members.me.permissions.has('ManageMessages')) {
-        if (member.permissions.has("ManageMessages")) {
+    if (message.guild.members.me.permissions.has(managerMessagesPermission)) {
+        if (member.permissions.has(managerMessagesPermission)) {
             let deleteAmount;
 
             if (isNaN(args[0]) || parseInt(args[0]) <= 0) {
                 return message.reply('Please indicate the number!');
-            }
-
-            if (parseInt(args[0]) > 100) {
+            } else if (parseInt(args[0]) > 100) {
                 return message.reply('You can only delete 100 messages at a time!');
             } else {
                 deleteAmount = parseInt(args[0]);
@@ -35,9 +33,9 @@ module.exports.execute = async (client, message, args) => {
                 await message.channel.send({ embeds: [successEmbed] });
             }
         } else {
-            message.channel.send(`${tag} you don't have permission.`);
+            message.reply(`You don't have permission.`);
         }
     } else {
-        message.channel.send(`${tag} Sorry, I don't have permission to manage messages!`);
+        message.reply(`Sorry, I don't have permission to manage messages!`);
     }
 };

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const prefix = require('../config/config.json');
 
 module.exports.details = {
@@ -11,16 +11,16 @@ module.exports.details = {
 
 module.exports.execute = async (client, message, args) => {
     const { member, mentions } = message;
-    const tag = `<@${member.id}>`;
+    const banPermission = PermissionsBitField.Flags.BanMembers;
 
-    // Проверяем, есть ли у бота разрешения
-    if (!message.guild.me || !message.guild.me.permissions.has('BAN_MEMBERS')) {
-        return message.channel.send(`${tag} Sorry, I don't have permission to ban users!`);
+    // Checking if the bot has permissions
+    if (!message.guild.members.me.permissions.has(banPermission)) {
+        return message.reply(`Sorry, I don't have permission to ban users!`);
     }
 
-    // Проверяем, есть ли у пользователя разрешения
-    if (!member.permissions.has('ADMINISTRATOR') && !member.permissions.has('BAN_MEMBERS')) {
-        return message.channel.send(`${tag} You don't have permission.`);
+    // Check if the user has permissions
+    if (!member.permissions.has('ADMINISTRATOR') && !member.permissions.has(banPermission)) {
+        return message.reply(`You don't have permission.`);
     }
 
     const target = mentions.users.first();
@@ -41,9 +41,9 @@ module.exports.execute = async (client, message, args) => {
             await message.channel.send({ embeds: [banEmbed] });
         } catch (error) {
             console.error(error);
-            message.channel.send(`${tag} An error occurred while trying to ban this user.`);
+            message.reply(`An error occurred while trying to ban this user.`);
         }
     } else {
-        message.channel.send(`${tag} Please specify the user!`);
+        message.reply(`Please specify the user!`);
     }
 };

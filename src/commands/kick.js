@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const prefix = require('../config/config.json');
 
 module.exports.details = {
@@ -11,10 +11,10 @@ module.exports.details = {
 
 module.exports.execute = async (client, message, args) => {
     const { member, mentions } = message;
-    const tag = `<@${member.id}>`;
+    const kickMembersPermission = PermissionsBitField.Flags.KickMembers;
 
-    if (message.guild.members.me.permissions.has('KickMembers')) {
-        if (member.permissions.has('Administrator') || member.permissions.has('KickMembers')) {
+    if (message.guild.members.me.permissions.has(kickMembersPermission)) {
+        if (member.permissions.has(kickMembersPermission)) {
             const target = mentions.users.first();
             if (target) {
                 const targetMember = message.guild.members.cache.get(target.id);
@@ -29,19 +29,19 @@ module.exports.execute = async (client, message, args) => {
                         )
                         .setThumbnail(target.displayAvatarURL())
                         .setFooter({ text: 'Made by LachlanDev#8014', iconURL: 'https://cdn.discordapp.com/avatars/365350852967399454/ce6e6e91fa887aa86e23ef356c9878fe' });
-                    
+
                     await message.channel.send({ embeds: [kickEmbed] });
                 } catch (error) {
                     console.error(error);
-                    message.channel.send(`${tag} I was unable to kick that user.`);
+                    message.reply(`I was unable to kick that user.`);
                 }
             } else {
-                message.channel.send(`${tag} please specify a user!`);
+                message.reply(`Please specify a user!`);
             }
         } else {
-            message.channel.send(`${tag} you don't have permission.`);
+            message.reply(`You don't have permission.`);
         }
     } else {
-        message.channel.send(`${tag} Sorry, I don't have permission to kick members!`);
+        message.reply(`Sorry, I don't have permission to kick members!`);
     }
 };

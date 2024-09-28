@@ -21,5 +21,5 @@ module.exports.execute = async (client, message, args) => {
         .setDescription(`The result is: \`\`${flip()}\`\``)
         .setFooter({ text: "Made by LachlanDev#8014", iconURL: "https://cdn.discordapp.com/avatars/365350852967399454/ce6e6e91fa887aa86e23ef356c9878fe" });
 
-    await message.channel.send({ embeds: [resultEmbed] });
+    await message.reply({ embeds: [resultEmbed] });
 };
