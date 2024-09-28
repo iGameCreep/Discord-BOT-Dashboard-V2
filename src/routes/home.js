@@ -10,10 +10,10 @@ const number = require('easy-number-formatter');
 const fetch = require("node-fetch");
 const jsonfile = require('jsonfile');
 
-const themes = "./config/theme.json"
+const themes = "./config/theme.json";
 
 router.get('/', ensureAuthenticated, (req, res) => {
-    res.redirect('/home')
+    res.redirect('/home');
 })
 
 router.get('/home', ensureAuthenticated, (req, res) => {
@@ -26,17 +26,17 @@ router.get('/home', ensureAuthenticated, (req, res) => {
             useQueryString: true
         }
     }
-    
+
     // Prase update request data to JSON.
     fetch(url, options).then(async (response) => {
         let verL;
 
         try {
-            let jsonprased = JSON.parse(await response.text())
-            verL = jsonprased.ver
+            let jsonprased = JSON.parse(await response.text());
+            verL = jsonprased.ver;
         } catch (e) {
-            console.log(chalk.red("Failed to check for updates you may continue using this version, please try again or contact LachlanDev#8014"))
-            verL = ver.ver
+            console.log(chalk.red("Failed to check for updates you may continue using this version, please try again or contact LachlanDev#8014"));
+            verL = ver.ver;
         }
 
         res.render('home/home', {
@@ -48,7 +48,7 @@ router.get('/home', ensureAuthenticated, (req, res) => {
             Latestversion: verL,
             Currentversion: ver.ver,
             theme: theme
-        })
+        });
     })
 })
 

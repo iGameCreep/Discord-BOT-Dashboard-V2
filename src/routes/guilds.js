@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated, forwardAuthenticated } = require('../auth/auth');
+const { ensureAuthenticated } = require('../auth/auth');
 const discord = require('../bot');
 const dateformat = require('dateformat');
 const number = require('easy-number-formatter');
@@ -8,7 +8,7 @@ const themes = "./config/theme.json";
 const jsonfile = require('jsonfile');
 
 router.get('/guilds', ensureAuthenticated, (req, res) => {
-    var theme = jsonfile.readFileSync(themes);
+    const theme = jsonfile.readFileSync(themes);
     let guilds = discord.client.guilds.cache.map(guild => guild);
     res.render('home/guilds', {
         guilds: guilds,
